@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
+import { FontAwesomeIcon } from '@/lib/fontawesome';
 
 export default function HomePage() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -20,7 +21,7 @@ export default function HomePage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="loading loading-spinner loading-lg text-primary"></div>
+        <FontAwesomeIcon icon="spinner" className="text-4xl text-primary animate-spin" />
       </div>
     );
   }
@@ -62,9 +63,7 @@ export default function HomePage() {
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center">
                 <div className="text-primary mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
+                  <FontAwesomeIcon icon="shield-alt" className="text-5xl mx-auto" />
                 </div>
                 <h3 className="card-title justify-center">Secure & Reliable</h3>
                 <p>Your data is protected with enterprise-grade security and reliable infrastructure.</p>
@@ -74,9 +73,7 @@ export default function HomePage() {
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center">
                 <div className="text-primary mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
+                  <FontAwesomeIcon icon="bolt" className="text-5xl mx-auto" />
                 </div>
                 <h3 className="card-title justify-center">Lightning Fast</h3>
                 <p>Built with modern technology for optimal performance and user experience.</p>
@@ -86,9 +83,7 @@ export default function HomePage() {
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center">
                 <div className="text-primary mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
+                  <FontAwesomeIcon icon="heart" className="text-5xl mx-auto" />
                 </div>
                 <h3 className="card-title justify-center">Easy to Use</h3>
                 <p>Intuitive interface designed for vendors of all technical skill levels.</p>
@@ -104,6 +99,7 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
           <p className="text-xl mb-8">Join Vendorly today and take your business to the next level.</p>
           <Link href="/auth/register" className="btn btn-accent btn-lg">
+            <FontAwesomeIcon icon="rocket" className="mr-2" />
             Create Your Free Account
           </Link>
         </div>

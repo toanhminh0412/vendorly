@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { FontAwesomeIcon } from '@/lib/fontawesome';
 
 export default function DashboardPage() {
   const { user, isLoading, isAuthenticated, logout } = useAuth();
@@ -22,7 +23,7 @@ export default function DashboardPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="loading loading-spinner loading-lg text-primary"></div>
+        <FontAwesomeIcon icon="spinner" className="text-4xl text-primary animate-spin" />
       </div>
     );
   }
@@ -67,12 +68,23 @@ export default function DashboardPage() {
             <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
               <li>
                 <a className="justify-between">
+                  <FontAwesomeIcon icon="user" className="mr-2" />
                   Profile
                   <span className="badge">New</span>
                 </a>
               </li>
-              <li><a>Settings</a></li>
-              <li><button onClick={handleLogout}>Logout</button></li>
+              <li>
+                <a>
+                  <FontAwesomeIcon icon="cog" className="mr-2" />
+                  Settings
+                </a>
+              </li>
+              <li>
+                <button onClick={handleLogout}>
+                  <FontAwesomeIcon icon="sign-out-alt" className="mr-2" />
+                  Logout
+                </button>
+              </li>
             </ul>
           </div>
         </div>
@@ -93,6 +105,7 @@ export default function DashboardPage() {
               </p>
               {!user.is_email_verified && (
                 <button className="btn btn-accent">
+                  <FontAwesomeIcon icon="envelope" className="mr-2" />
                   Verify Email
                 </button>
               )}
@@ -104,9 +117,7 @@ export default function DashboardPage() {
         <div className="stats shadow w-full mb-8">
           <div className="stat">
             <div className="stat-figure text-primary">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-              </svg>
+              <FontAwesomeIcon icon="heart" className="text-3xl" />
             </div>
             <div className="stat-title">Total Likes</div>
             <div className="stat-value text-primary">25.6K</div>
@@ -115,9 +126,7 @@ export default function DashboardPage() {
 
           <div className="stat">
             <div className="stat-figure text-secondary">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" className="inline-block w-8 h-8 stroke-current">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-              </svg>
+              <FontAwesomeIcon icon="chart-line" className="text-3xl" />
             </div>
             <div className="stat-title">Page Views</div>
             <div className="stat-value text-secondary">2.6M</div>
@@ -143,24 +152,39 @@ export default function DashboardPage() {
         {/* User Info Card */}
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
-            <h2 className="card-title">User Information</h2>
+            <h2 className="card-title">
+              <FontAwesomeIcon icon="user-circle" className="mr-2" />
+              User Information
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="label">
-                  <span className="label-text font-medium">Email</span>
+                  <span className="label-text font-medium">
+                    <FontAwesomeIcon icon="envelope" className="mr-2" />
+                    Email
+                  </span>
                 </label>
                 <div className="flex items-center gap-2">
                   <span>{user.email}</span>
                   {user.is_email_verified ? (
-                    <div className="badge badge-success">Verified</div>
+                    <div className="badge badge-success">
+                      <FontAwesomeIcon icon="check-circle" className="mr-1" />
+                      Verified
+                    </div>
                   ) : (
-                    <div className="badge badge-warning">Unverified</div>
+                    <div className="badge badge-warning">
+                      <FontAwesomeIcon icon="exclamation-circle" className="mr-1" />
+                      Unverified
+                    </div>
                   )}
                 </div>
               </div>
               <div>
                 <label className="label">
-                  <span className="label-text font-medium">Username</span>
+                  <span className="label-text font-medium">
+                    <FontAwesomeIcon icon="user" className="mr-2" />
+                    Username
+                  </span>
                 </label>
                 <span className="text-sm text-base-content/70">{user.username} (auto-generated)</span>
               </div>
@@ -184,7 +208,10 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="card-actions justify-end mt-4">
-              <button className="btn btn-primary">Edit Profile</button>
+              <button className="btn btn-primary">
+                <FontAwesomeIcon icon="edit" className="mr-2" />
+                Edit Profile
+              </button>
             </div>
           </div>
         </div>

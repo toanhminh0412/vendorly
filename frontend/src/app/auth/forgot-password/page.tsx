@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { authAPI } from '@/lib/api';
+import { FontAwesomeIcon } from '@/lib/fontawesome';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -31,9 +32,7 @@ export default function ForgotPasswordPage() {
         <div className="card w-full max-w-md bg-base-100 shadow-xl">
           <div className="card-body text-center">
             <div className="text-success mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
+              <FontAwesomeIcon icon="envelope" className="text-6xl mx-auto" />
             </div>
             <h2 className="text-2xl font-bold text-success mb-4">Email Sent!</h2>
             <p className="text-base-content/70 mb-6">
@@ -75,9 +74,7 @@ export default function ForgotPasswordPage() {
           {/* Error Alert */}
           {error && (
             <div className="alert alert-error mb-4">
-              <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
+              <FontAwesomeIcon icon="times-circle" className="text-xl" />
               <span>{error}</span>
             </div>
           )}
@@ -110,7 +107,14 @@ export default function ForgotPasswordPage() {
               className={`btn btn-primary w-full ${isLoading ? 'loading' : ''}`}
               disabled={isLoading}
             >
-              {isLoading ? 'Sending...' : 'Send Reset Link'}
+              {isLoading ? (
+                <>
+                  <FontAwesomeIcon icon="spinner" className="animate-spin mr-2" />
+                  Sending...
+                </>
+              ) : (
+                'Send Reset Link'
+              )}
             </button>
           </form>
 
