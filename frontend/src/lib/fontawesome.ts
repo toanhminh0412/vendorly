@@ -22,7 +22,11 @@ import {
   faShieldAlt,
   faTachometerAlt,
   faRocket,
-  faPlus
+  faPlus,
+  faCodeBranch,
+  faSliders,
+  faHandPointer,
+  faBars
 } from '@fortawesome/free-solid-svg-icons';
 
 // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
@@ -51,7 +55,11 @@ library.add(
   faShieldAlt,
   faTachometerAlt,
   faRocket,
-  faPlus
+  faPlus,
+  faCodeBranch,
+  faSliders,
+  faHandPointer,
+  faBars
 );
 
 export { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 

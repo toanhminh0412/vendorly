@@ -11,10 +11,8 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading) {
-      if (isAuthenticated) {
-        router.push('/dashboard');
-      }
+    if (!isLoading && isAuthenticated) {
+      router.push('/dashboard');
     }
   }, [isAuthenticated, isLoading, router]);
 
@@ -63,27 +61,27 @@ export default function HomePage() {
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center">
                 <div className="text-primary mb-4">
-                  <FontAwesomeIcon icon="shield-alt" className="text-5xl mx-auto" />
+                  <FontAwesomeIcon icon="code-branch" className="text-5xl mx-auto" />
                 </div>
-                <h3 className="card-title justify-center">Secure & Reliable</h3>
-                <p>Your data is protected with enterprise-grade security and reliable infrastructure.</p>
+                <h3 className="card-title justify-center">Open Source</h3>
+                <p>The software is open source and free to use.</p>
               </div>
             </div>
 
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center">
                 <div className="text-primary mb-4">
-                  <FontAwesomeIcon icon="bolt" className="text-5xl mx-auto" />
+                  <FontAwesomeIcon icon="sliders" className="text-5xl mx-auto" />
                 </div>
-                <h3 className="card-title justify-center">Lightning Fast</h3>
-                <p>Built with modern technology for optimal performance and user experience.</p>
+                <h3 className="card-title justify-center">Customizable</h3>
+                <p>Customize the software however you want.</p>
               </div>
             </div>
 
             <div className="card bg-base-100 shadow-xl">
               <div className="card-body text-center">
                 <div className="text-primary mb-4">
-                  <FontAwesomeIcon icon="heart" className="text-5xl mx-auto" />
+                  <FontAwesomeIcon icon="hand-pointer" className="text-5xl mx-auto" />
                 </div>
                 <h3 className="card-title justify-center">Easy to Use</h3>
                 <p>Intuitive interface designed for vendors of all technical skill levels.</p>
