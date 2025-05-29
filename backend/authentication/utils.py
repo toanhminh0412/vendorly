@@ -1,8 +1,9 @@
+import logging
+
 from django.core.mail import send_mail
 from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
-import logging
 
 logger = logging.getLogger(__name__)
 
@@ -33,11 +34,11 @@ def send_verification_email(user_email, verification_token, user_name):
             fail_silently=False,
         )
         
-        logger.info(f"Verification email sent successfully to {user_email}")
+        logger.info("Verification email sent successfully to %s", user_email)
         return True
         
-    except Exception as e:
-        logger.error(f"Failed to send verification email to {user_email}: {str(e)}")
+    except Exception as exc:
+        logger.error("Failed to send verification email to %s: %s", user_email, str(exc))
         return False
 
 
@@ -67,9 +68,9 @@ def send_password_reset_email(user_email, reset_token, user_name):
             fail_silently=False,
         )
         
-        logger.info(f"Password reset email sent successfully to {user_email}")
+        logger.info("Password reset email sent successfully to %s", user_email)
         return True
         
-    except Exception as e:
-        logger.error(f"Failed to send password reset email to {user_email}: {str(e)}")
+    except Exception as exc:
+        logger.error("Failed to send password reset email to %s: %s", user_email, str(exc))
         return False 

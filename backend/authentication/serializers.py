@@ -40,8 +40,8 @@ class UserLoginSerializer(serializers.Serializer):
                 raise serializers.ValidationError('User account is disabled')
             attrs['user'] = user
             return attrs
-        else:
-            raise serializers.ValidationError('Must include email and password')
+        
+        raise serializers.ValidationError('Must include email and password')
 
 
 class EmailVerificationSerializer(serializers.Serializer):
@@ -54,8 +54,10 @@ class PasswordResetRequestSerializer(serializers.Serializer):
     def validate_email(self, value):
         try:
             User.objects.get(email=value)
-        except User.DoesNotExist:
-            raise serializers.ValidationError("No user found with this email address")
+        except User.DoesNotExist as exc:
+            raise serializers.ValidationError(
+                "No user found with this email address"
+            ) from exc
         return value
 
 
@@ -73,5 +75,10 @@ class PasswordResetConfirmSerializer(serializers.Serializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'email', 'username', 'first_name', 'last_name', 'is_email_verified', 'created_at')
-        read_only_fields = ('id', 'email', 'username', 'is_email_verified', 'created_at') 
+        fields = (
+            'id', 'email', 'username', 'first_name', 'last_name', 
+            'is_email_verified', 'created_at'
+        )
+        read_only_fields = (
+            'id', 'email', 'username', 'is_email_verified', 'created_at'
+        ) 
