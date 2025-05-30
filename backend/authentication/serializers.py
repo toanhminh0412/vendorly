@@ -40,7 +40,7 @@ class UserLoginSerializer(serializers.Serializer):
                 raise serializers.ValidationError('User account is disabled')
             attrs['user'] = user
             return attrs
-        
+
         raise serializers.ValidationError('Must include email and password')
 
 
@@ -81,4 +81,4 @@ class UserProfileSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             'id', 'email', 'username', 'is_email_verified', 'created_at'
-        ) 
+        )
