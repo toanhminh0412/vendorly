@@ -1,10 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { authAPI } from '@/lib/api';
 import { FontAwesomeIcon } from '@/lib/fontawesome';
+
+interface ApiError {
+  response?: {
+    data?: {
+      error?: string;
+    };
+  };
+}
 
 export default function VerifyEmailPage() {
   const [status, setStatus] = useState<'loading' | 'success' | 'error' | 'expired'>('loading');
@@ -12,7 +20,6 @@ export default function VerifyEmailPage() {
   const [email, setEmail] = useState('');
   const [isResending, setIsResending] = useState(false);
 
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -29,13 +36,14 @@ export default function VerifyEmailPage() {
         await authAPI.verifyEmail(token);
         setStatus('success');
         setMessage('Your email has been successfully verified!');
-      } catch (error: any) {
-        if (error.response?.data?.error?.includes('expired')) {
+      } catch (error: unknown) {
+        const apiError = error as ApiError;
+        if (apiError.response?.data?.error?.includes('expired')) {
           setStatus('expired');
           setMessage('Your verification link has expired.');
         } else {
           setStatus('error');
-          setMessage(error.response?.data?.error || 'Verification failed. Please try again.');
+          setMessage(apiError.response?.data?.error || 'Verification failed. Please try again.');
         }
       }
     };
@@ -53,8 +61,9 @@ export default function VerifyEmailPage() {
     try {
       await authAPI.resendVerification(email);
       alert('Verification email sent successfully! Please check your inbox.');
-    } catch (error: any) {
-      alert(error.response?.data?.error || 'Failed to resend verification email');
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      alert(apiError.response?.data?.error || 'Failed to resend verification email');
     } finally {
       setIsResending(false);
     }

@@ -1,10 +1,18 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { authAPI } from '@/lib/api';
 import { FontAwesomeIcon } from '@/lib/fontawesome';
+
+interface ApiError {
+  response?: {
+    data?: {
+      error?: string;
+    };
+  };
+}
 
 export default function ResetPasswordPage() {
   const [formData, setFormData] = useState({
@@ -18,7 +26,6 @@ export default function ResetPasswordPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [token, setToken] = useState<string | null>(null);
 
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
@@ -61,9 +68,9 @@ export default function ResetPasswordPage() {
         password_confirm: formData.password_confirm,
       });
       setSuccess(true);
-    } catch (err: any) {
-      console.log(err);
-      setError(err.response?.data?.error || 'Failed to reset password. Please try again.');
+    } catch (err: unknown) {
+      const apiError = err as ApiError;
+      setError(apiError.response?.data?.error || 'Failed to reset password. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -222,13 +229,12 @@ export default function ResetPasswordPage() {
           </form>
 
           {/* Password Requirements */}
-          <div className="mt-6 p-4 bg-base-200 rounded-lg">
+          <div className="mt-4 p-3 bg-base-200 rounded-lg">
             <h3 className="font-medium text-sm mb-2">Password Requirements:</h3>
             <ul className="text-xs text-base-content/70 space-y-1">
               <li>• At least 8 characters long</li>
-              <li>• Contains both letters and numbers</li>
-              <li>• Not too similar to your personal information</li>
-              <li>• Not a commonly used password</li>
+              <li>• Include both letters and numbers</li>
+              <li>• Avoid common passwords</li>
             </ul>
           </div>
 

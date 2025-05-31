@@ -6,6 +6,14 @@ import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { FontAwesomeIcon } from '@/lib/fontawesome';
 
+interface ApiError {
+  response?: {
+    data?: {
+      non_field_errors?: string[];
+    };
+  };
+}
+
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,8 +32,9 @@ export default function LoginPage() {
     try {
       await login(email, password);
       router.push('/dashboard');
-    } catch (err: any) {
-      setError(err.response?.data?.non_field_errors?.[0] || 'Login failed. Please try again.');
+    } catch (err: unknown) {
+      const apiError = err as ApiError;
+      setError(apiError.response?.data?.non_field_errors?.[0] || 'Login failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -121,7 +130,7 @@ export default function LoginPage() {
           {/* Register Link */}
           <div className="text-center">
             <p className="text-base-content/70">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <Link href="/auth/register" className="link link-primary font-medium">
                 Sign up
               </Link>

@@ -1,17 +1,15 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import Cookies from 'js-cookie';
 import { authAPI } from '@/lib/api';
 
 interface User {
   id: number;
   email: string;
-  username: string;
-  first_name: string;
-  last_name: string;
+  first_name?: string;
+  last_name?: string;
   is_email_verified: boolean;
-  created_at: string;
 }
 
 interface AuthContextType {
@@ -19,29 +17,22 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
-  logout: () => void;
-  register: (data: {
-    email: string;
-    password: string;
-    password_confirm: string;
-    first_name?: string;
-    last_name?: string;
-  }) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
+  logout: () => Promise<void>;
+  refreshAuth: () => Promise<void>;
+}
+
+interface RegisterData {
+  email: string;
+  password: string;
+  password_confirm: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
-
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -54,7 +45,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         try {
           const userData = await authAPI.getProfile();
           setUser(userData);
-        } catch (error) {
+        } catch {
           // Token is invalid, remove it
           Cookies.remove('access_token');
           Cookies.remove('refresh_token');
@@ -67,18 +58,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const login = async (email: string, password: string) => {
-    try {
-      const response = await authAPI.login({ email, password });
-      
-      // Store tokens
-      Cookies.set('access_token', response.access_token, { expires: 1 });
-      Cookies.set('refresh_token', response.refresh_token, { expires: 7 });
-      
-      // Set user data
-      setUser(response.user);
-    } catch (error) {
-      throw error;
-    }
+    const response = await authAPI.login({ email, password });
+    const { access_token, refresh_token, user: userData } = response;
+    
+    Cookies.set('access_token', access_token, { expires: 1 });
+    Cookies.set('refresh_token', refresh_token, { expires: 7 });
+    setUser(userData);
+  };
+
+  const register = async (data: RegisterData) => {
+    await authAPI.register(data);
+    // Don't auto-login after registration, user needs to verify email
   };
 
   const logout = async () => {
@@ -87,28 +77,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (refreshToken) {
         await authAPI.logout(refreshToken);
       }
-    } catch (error) {
-      // Even if logout fails on server, clear local data
-      console.error('Logout error:', error);
+    } catch {
+      // Ignore logout errors
     } finally {
-      // Clear tokens and user data
       Cookies.remove('access_token');
       Cookies.remove('refresh_token');
       setUser(null);
     }
   };
 
-  const register = async (data: {
-    email: string;
-    password: string;
-    password_confirm: string;
-    first_name?: string;
-    last_name?: string;
-  }) => {
+  const refreshAuth = async () => {
     try {
-      await authAPI.register(data);
-    } catch (error) {
-      throw error;
+      const userData = await authAPI.getProfile();
+      setUser(userData);
+    } catch {
+      await logout();
     }
   };
 
@@ -117,9 +100,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     isLoading,
     isAuthenticated,
     login,
-    logout,
     register,
+    logout,
+    refreshAuth,
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}; 
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}

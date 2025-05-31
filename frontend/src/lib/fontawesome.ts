@@ -26,7 +26,12 @@ import {
   faCodeBranch,
   faSliders,
   faHandPointer,
-  faBars
+  faBars,
+  faShoppingBag,
+  faStore,
+  faClock,
+  faUserPlus,
+  faSignInAlt
 } from '@fortawesome/free-solid-svg-icons';
 
 // Tell Font Awesome to skip adding the CSS automatically since it's being imported above
@@ -59,7 +64,12 @@ library.add(
   faCodeBranch,
   faSliders,
   faHandPointer,
-  faBars
+  faBars,
+  faShoppingBag,
+  faStore,
+  faClock,
+  faUserPlus,
+  faSignInAlt
 );
 
 export { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 

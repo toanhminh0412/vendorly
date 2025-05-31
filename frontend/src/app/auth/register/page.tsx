@@ -1,10 +1,23 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { FontAwesomeIcon } from '@/lib/fontawesome';
+
+interface ApiError {
+  response?: {
+    data?: {
+      [key: string]: string[] | undefined;
+      non_field_errors?: string[];
+    };
+  };
+}
+
+interface FormErrors {
+  [key: string]: string[] | undefined;
+  non_field_errors?: string[];
+}
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
@@ -15,13 +28,12 @@ export default function RegisterPage() {
     last_name: '',
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<any>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const { register } = useAuth();
-  const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -45,8 +57,9 @@ export default function RegisterPage() {
     try {
       await register(formData);
       setSuccess(true);
-    } catch (err: any) {
-      setErrors(err.response?.data || { non_field_errors: ['Registration failed. Please try again.'] });
+    } catch (err: unknown) {
+      const apiError = err as ApiError;
+      setErrors(apiError.response?.data || { non_field_errors: ['Registration failed. Please try again.'] });
     } finally {
       setIsLoading(false);
     }
@@ -62,7 +75,7 @@ export default function RegisterPage() {
             </div>
             <h2 className="text-2xl font-bold text-success mb-4">Registration Successful!</h2>
             <p className="text-base-content/70 mb-6">
-              We've sent a verification email to <strong>{formData.email}</strong>. 
+              We&apos;ve sent a verification email to <strong>{formData.email}</strong>. 
               Please check your inbox and click the verification link to activate your account.
             </p>
             <div className="space-y-3">
@@ -245,6 +258,16 @@ export default function RegisterPage() {
               )}
             </button>
           </form>
+
+          {/* Password Requirements */}
+          <div className="mt-4 p-3 bg-base-200 rounded-lg">
+            <h3 className="font-medium text-sm mb-2">Password Requirements:</h3>
+            <ul className="text-xs text-base-content/70 space-y-1">
+              <li>• At least 8 characters long</li>
+              <li>• Include both letters and numbers</li>
+              <li>• Avoid common passwords</li>
+            </ul>
+          </div>
 
           {/* Divider */}
           <div className="divider">OR</div>

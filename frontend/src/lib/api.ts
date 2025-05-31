@@ -47,7 +47,7 @@ api.interceptors.response.use(
           originalRequest.headers.Authorization = `Bearer ${access}`;
           return api(originalRequest);
         }
-      } catch (refreshError) {
+      } catch {
         // Refresh failed, redirect to login
         Cookies.remove('access_token');
         Cookies.remove('refresh_token');

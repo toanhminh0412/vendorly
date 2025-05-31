@@ -43,7 +43,7 @@ export default function HomePage() {
             </p>
             <div className="space-y-4">
               <Link href="/auth/register" className="btn btn-primary btn-lg w-full">
-                Get Started - It's Free
+                Get Started - It&apos;s Free
               </Link>
               <Link href="/auth/login" className="btn btn-outline btn-lg w-full">
                 Sign In to Your Account
