@@ -74,7 +74,8 @@ disable=raw-checker-failed,
         import-error,
         no-member,
         abstract-method,
-        broad-exception-caught
+        broad-exception-caught,
+        duplicate-code
 
 [REPORTS]
 # Set the output format. Available formats are text, parseable, colorized, json
