@@ -25,7 +25,7 @@ class UserModelTest(TestCase):
     def test_create_user(self):
         """Test creating a user with email."""
         user = User.objects.create_user(**self.user_data)
-        
+
         self.assertEqual(user.email, self.user_data['email'])
         self.assertEqual(user.first_name, self.user_data['first_name'])
         self.assertEqual(user.last_name, self.user_data['last_name'])
@@ -47,7 +47,7 @@ class UserModelTest(TestCase):
         expected_username = 'test'
         self.assertEqual(user.username, expected_username)
 
-    def test_duplicate_username_handling(self):
+    def test_duplicate_username(self):
         """Test handling of duplicate usernames."""
         # Create first user
         user1 = User.objects.create_user(
@@ -55,14 +55,14 @@ class UserModelTest(TestCase):
             email='test1@example.com',
             password='testpass123'
         )
-        
+
         # Create second user with same username base
         user2 = User.objects.create_user(
             username='test',  # Provide explicit username
             email='test@example.com',
             password='testpass123'
         )
-        
+
         self.assertEqual(user1.username, 'test1')
         self.assertNotEqual(user1.username, user2.username)
 
@@ -73,7 +73,7 @@ class UserModelTest(TestCase):
             email='unique@example.com',
             password='testpass123'
         )
-        
+
         with self.assertRaises(Exception):
             User.objects.create_user(
                 username='unique2',
@@ -95,7 +95,7 @@ class EmailVerificationTokenModelTest(TestCase):
     def test_create_verification_token(self):
         """Test creating an email verification token."""
         token = EmailVerificationToken.objects.create(user=self.user)
-        
+
         self.assertEqual(token.user, self.user)
         self.assertIsInstance(token.token, uuid.UUID)
         self.assertIsNotNone(token.expires_at)
@@ -105,7 +105,7 @@ class EmailVerificationTokenModelTest(TestCase):
         """Test that expiration is automatically set."""
         token = EmailVerificationToken.objects.create(user=self.user)
         expected_expiry = timezone.now() + timedelta(hours=24)
-        
+
         # Allow for small time difference in test execution
         self.assertAlmostEqual(
             token.expires_at.timestamp(),
@@ -123,7 +123,7 @@ class EmailVerificationTokenModelTest(TestCase):
         token = EmailVerificationToken.objects.create(user=self.user)
         token.expires_at = timezone.now() - timedelta(hours=1)
         token.save()
-        
+
         self.assertTrue(token.is_expired())
 
     def test_token_str_method(self):
@@ -136,7 +136,7 @@ class EmailVerificationTokenModelTest(TestCase):
         """Test that each token is unique."""
         token1 = EmailVerificationToken.objects.create(user=self.user)
         token2 = EmailVerificationToken.objects.create(user=self.user)
-        
+
         self.assertNotEqual(token1.token, token2.token)
 
 
@@ -150,10 +150,10 @@ class PasswordResetTokenModelTest(TestCase):
             password='testpass123'
         )
 
-    def test_create_password_reset_token(self):
+    def test_create_reset_token(self):
         """Test creating a password reset token."""
         token = PasswordResetToken.objects.create(user=self.user)
-        
+
         self.assertEqual(token.user, self.user)
         self.assertIsInstance(token.token, uuid.UUID)
         self.assertFalse(token.is_used)
@@ -164,7 +164,7 @@ class PasswordResetTokenModelTest(TestCase):
         """Test that expiration is automatically set to 1 hour."""
         token = PasswordResetToken.objects.create(user=self.user)
         expected_expiry = timezone.now() + timedelta(hours=1)
-        
+
         self.assertAlmostEqual(
             token.expires_at.timestamp(),
             expected_expiry.timestamp(),
@@ -181,7 +181,7 @@ class PasswordResetTokenModelTest(TestCase):
         token = PasswordResetToken.objects.create(user=self.user)
         token.expires_at = timezone.now() - timedelta(minutes=1)
         token.save()
-        
+
         self.assertTrue(token.is_expired())
 
     def test_token_str_method(self):
@@ -199,5 +199,5 @@ class PasswordResetTokenModelTest(TestCase):
         """Test that each token is unique."""
         token1 = PasswordResetToken.objects.create(user=self.user)
         token2 = PasswordResetToken.objects.create(user=self.user)
-        
-        self.assertNotEqual(token1.token, token2.token) 
+
+        self.assertNotEqual(token1.token, token2.token)
