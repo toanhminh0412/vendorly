@@ -3,9 +3,10 @@
 setup_backend:
 	cd backend && \
 	python3 -m venv venv && \
-	source venv/bin/activate && \
+	. venv/bin/activate && \
 	pip install -r requirements.txt && \
 	python3 manage.py migrate
+	@echo "Backend setup complete. Virtual environment created in backend/venv. Run 'source backend/venv/bin/activate' to activate it."
 
 # Testing
 test_backend: lint_backend unittest_backend
