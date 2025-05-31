@@ -1,0 +1,26 @@
+name: Test Backend
+
+on:
+  push:
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+
+    - name: Set up backend
+      run: |
+        make setup_backend
+
+    - name: Run backend tests
+      run: make test_backend 
