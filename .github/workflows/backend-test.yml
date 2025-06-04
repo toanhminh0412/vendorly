@@ -1,0 +1,43 @@
+name: Test Backend
+
+on:
+  push:
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test_backend:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: test_vendorly
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+
+    - name: Set up backend
+      run: |
+        make setup_backend
+
+    - name: Run backend tests
+      run: |
+        . backend/venv/bin/activate
+        make test_backend 
