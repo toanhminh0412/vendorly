@@ -21,12 +21,67 @@ pip install --upgrade pip   # Upgrade pip
 pip install -r requirements.txt
 ```
 
-3. Run migrations:
+3. Create a `.env` file in the `backend/` directory:
+
+```bash
+# Django Core Settings - Basic Django configuration
+SECRET_KEY=your-secret-key-here-change-in-production
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+TIME_ZONE=UTC
+
+# Database Configuration - Leave POSTGRES_HOST empty for SQLite, set it for PostgreSQL
+POSTGRES_HOST=
+POSTGRES_DB=vendorly
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=
+POSTGRES_PORT=5432
+
+# CORS Settings - Frontend access configuration
+CORS_ALLOWED_ORIGINS=http://localhost:3000
+CORS_ALLOW_CREDENTIALS=True
+
+# JWT Configuration - Authentication token settings
+ACCESS_TOKEN_LIFETIME_MINUTES=60
+REFRESH_TOKEN_LIFETIME_DAYS=7
+ROTATE_REFRESH_TOKENS=True
+BLACKLIST_AFTER_ROTATION=True
+UPDATE_LAST_LOGIN=False
+JWT_ALGORITHM=HS256
+JWT_SIGNING_KEY=
+JWT_VERIFYING_KEY=
+JWT_AUDIENCE=
+JWT_ISSUER=
+JWT_JWK_URL=
+JWT_LEEWAY=0
+JWT_AUTH_HEADER_TYPE=Bearer
+
+# Email Configuration - Email backend settings
+EMAIL_BACKEND=django.core.mail.backends.console.EmailBackend
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_USE_SSL=False
+EMAIL_HOST_USER=
+EMAIL_HOST_PASSWORD=
+DEFAULT_FROM_EMAIL=noreply@vendorly.com
+
+# Security Settings - Production security configuration
+SECURE_SSL_REDIRECT=True
+
+# Logging Configuration - Application logging levels
+DJANGO_LOG_LEVEL=INFO
+APP_LOG_LEVEL=INFO
+
+# Note: Many variables above have sensible defaults and can be omitted if not applicable
+```
+
+4. Run migrations:
 ```bash
 python manage.py migrate
 ```
 
-4. Start the development server:
+5. Start the development server:
 ```bash
 python manage.py runserver
 ```
