@@ -14,7 +14,7 @@ const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:8000';
 
 export const handlers = [
   // Register
-  http.post(`${API_BASE_URL}/auth/register/`, async ({ request, response }) => {
+  http.post('/auth/register/', async ({ request }) => {
     const body = await request.json();
     if (!body.email || !body.password || !body.password_confirm) {
       return HttpResponse.json({
@@ -31,7 +31,7 @@ export const handlers = [
   }),
 
   // Login
-  http.post(`${API_BASE_URL}/auth/login/`, async ({ request }) => {
+  http.post('/auth/login/', async ({ request }) => {
     const body = await request.json();
     if (body.email === 'fail@example.com') {
       return HttpResponse.json({
@@ -46,7 +46,7 @@ export const handlers = [
   }),
 
   // Verify Email
-  http.post(`${API_BASE_URL}/auth/verify-email/`, async ({ request }) => {
+  http.post('/auth/verify-email/', async ({ request }) => {
     const body = await request.json();
     if (body.token === 'expired') {
       return HttpResponse.json({ error: 'Verification token has expired' }, { status: 400 });
@@ -58,7 +58,7 @@ export const handlers = [
   }),
 
   // Resend Verification
-  http.post(`${API_BASE_URL}/auth/resend-verification/`, async ({ request }) => {
+  http.post('/auth/resend-verification/', async ({ request }) => {
     const body = await request.json();
     if (!body.email) {
       return HttpResponse.json({ error: 'Email is required' }, { status: 400 });
@@ -73,7 +73,7 @@ export const handlers = [
   }),
 
   // Forgot Password
-  http.post(`${API_BASE_URL}/auth/forgot-password/`, async ({ request }) => {
+  http.post('/auth/forgot-password/', async ({ request }) => {
     const body = await request.json();
     if (body.email === 'notfound@example.com') {
       return HttpResponse.json({ email: ['No user found with this email address'] }, { status: 400 });
@@ -85,7 +85,7 @@ export const handlers = [
   }),
 
   // Reset Password
-  http.post(`${API_BASE_URL}/auth/reset-password/`, async ({ request }) => {
+  http.post('/auth/reset-password/', async ({ request }) => {
     const body = await request.json();
     if (body.token === 'expired') {
       return HttpResponse.json({ error: 'Password reset token has expired' }, { status: 400 });
@@ -100,12 +100,12 @@ export const handlers = [
   }),
 
   // Get Profile
-  http.get(`${API_BASE_URL}/auth/profile/`, () => {
+  http.get('/auth/profile/', () => {
     return HttpResponse.json(mockUser);
   }),
 
   // Update Profile
-  http.put(`${API_BASE_URL}/auth/profile/update/`, async ({ request }) => {
+  http.put('/auth/profile/update/', async ({ request }) => {
     const body = await request.json();
     // Simulate validation error
     if (body.first_name === '') {
@@ -115,7 +115,7 @@ export const handlers = [
   }),
 
   // Logout
-  http.post(`${API_BASE_URL}/auth/logout/`, async ({ request }) => {
+  http.post('/auth/logout/', async ({ request }) => {
     const body = await request.json();
     if (body.refresh_token === 'invalid') {
       return HttpResponse.json({ error: 'Invalid token' }, { status: 400 });
@@ -124,7 +124,7 @@ export const handlers = [
   }),
 
   // Token Refresh (SimpleJWT)
-  http.post(`${API_BASE_URL}/token/refresh/`, async ({ request }) => {
+  http.post('/token/refresh/', async ({ request }) => {
     const body = await request.json();
     if (body.refresh === 'expired') {
       return HttpResponse.json({ detail: 'Token is invalid or expired', code: 'token_not_valid' }, { status: 401 });
