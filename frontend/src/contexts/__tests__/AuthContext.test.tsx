@@ -13,7 +13,11 @@ jest.mock('js-cookie', () => ({
 
 jest.mock('@/lib/api');
 
-const mockCookies = Cookies as any;
+const mockCookies = Cookies as unknown as {
+  get: jest.MockedFunction<typeof Cookies.get>;
+  set: jest.MockedFunction<typeof Cookies.set>;
+  remove: jest.MockedFunction<typeof Cookies.remove>;
+};
 const mockAuthAPI = authAPI as jest.Mocked<typeof authAPI>;
 
 // Test component to access auth context

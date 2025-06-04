@@ -10,8 +10,6 @@ const mockUser = {
   created_at: '2024-01-01T00:00:00Z',
 };
 
-const API_BASE_URL = process.env.API_BASE_URL || 'http://localhost:8000';
-
 export const handlers = [
   // Register
   http.post('/auth/register/', async ({ request }) => {
