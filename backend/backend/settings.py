@@ -34,7 +34,10 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() in ['true', '1', 'yes', 'on']
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',') if os.getenv('ALLOWED_HOSTS') else []
+ALLOWED_HOSTS = (
+    os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+    if os.getenv('ALLOWED_HOSTS') else []
+)
 
 
 # Application definition
@@ -164,7 +167,10 @@ CORS_ALLOWED_ORIGINS = os.getenv(
     'http://localhost:3000'
 ).split(',')
 
-CORS_ALLOW_CREDENTIALS = os.getenv('CORS_ALLOW_CREDENTIALS', 'True').lower() in ['true', '1', 'yes', 'on']
+CORS_ALLOW_CREDENTIALS = (
+    os.getenv('CORS_ALLOW_CREDENTIALS', 'True').lower()
+    in ['true', '1', 'yes', 'on']
+)
 
 # REST Framework settings
 REST_FRAMEWORK = {
@@ -178,11 +184,24 @@ REST_FRAMEWORK = {
 
 # JWT Settings
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=int(os.getenv('ACCESS_TOKEN_LIFETIME_MINUTES', '60'))),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=int(os.getenv('REFRESH_TOKEN_LIFETIME_DAYS', '7'))),
-    'ROTATE_REFRESH_TOKENS': os.getenv('ROTATE_REFRESH_TOKENS', 'True').lower() in ['true', '1', 'yes', 'on'],
-    'BLACKLIST_AFTER_ROTATION': os.getenv('BLACKLIST_AFTER_ROTATION', 'True').lower() in ['true', '1', 'yes', 'on'],
-    'UPDATE_LAST_LOGIN': os.getenv('UPDATE_LAST_LOGIN', 'False').lower() in ['true', '1', 'yes', 'on'],
+    'ACCESS_TOKEN_LIFETIME': timedelta(
+        minutes=int(os.getenv('ACCESS_TOKEN_LIFETIME_MINUTES', '60'))
+    ),
+    'REFRESH_TOKEN_LIFETIME': timedelta(
+        days=int(os.getenv('REFRESH_TOKEN_LIFETIME_DAYS', '7'))
+    ),
+    'ROTATE_REFRESH_TOKENS': (
+        os.getenv('ROTATE_REFRESH_TOKENS', 'True').lower()
+        in ['true', '1', 'yes', 'on']
+    ),
+    'BLACKLIST_AFTER_ROTATION': (
+        os.getenv('BLACKLIST_AFTER_ROTATION', 'True').lower()
+        in ['true', '1', 'yes', 'on']
+    ),
+    'UPDATE_LAST_LOGIN': (
+        os.getenv('UPDATE_LAST_LOGIN', 'False').lower()
+        in ['true', '1', 'yes', 'on']
+    ),
 
     'ALGORITHM': os.getenv('JWT_ALGORITHM', 'HS256'),
     'SIGNING_KEY': os.getenv('JWT_SIGNING_KEY', SECRET_KEY),
@@ -212,11 +231,18 @@ SIMPLE_JWT = {
 }
 
 # Email settings
-EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_BACKEND = os.getenv(
+    'EMAIL_BACKEND', 
+    'django.core.mail.backends.console.EmailBackend'
+)
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
-EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True').lower() in ['true', '1', 'yes', 'on']
-EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', 'False').lower() in ['true', '1', 'yes', 'on']
+EMAIL_USE_TLS = (
+    os.getenv('EMAIL_USE_TLS', 'True').lower() in ['true', '1', 'yes', 'on']
+)
+EMAIL_USE_SSL = (
+    os.getenv('EMAIL_USE_SSL', 'False').lower() in ['true', '1', 'yes', 'on']
+)
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@vendorly.com')
@@ -231,7 +257,10 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_REDIRECT_EXEMPT = []
-    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True').lower() in ['true', '1', 'yes', 'on']
+    SECURE_SSL_REDIRECT = (
+        os.getenv('SECURE_SSL_REDIRECT', 'True').lower()
+        in ['true', '1', 'yes', 'on']
+    )
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     USE_TZ = True
     SESSION_COOKIE_SECURE = True
