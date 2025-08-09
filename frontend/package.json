@@ -20,7 +20,7 @@
     "axios": "^1.9.0",
     "jest-fixed-jsdom": "^0.0.9",
     "js-cookie": "^3.0.5",
-    "next": "15.3.2",
+    "next": "^15.4.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.56.4",
